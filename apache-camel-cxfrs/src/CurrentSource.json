@@ -1,0 +1,44 @@
+{
+    "coord": {
+        "lon": 113.68,
+        "lat": 45.13
+    },
+    "weather": [
+        {
+            "id": 802,
+            "main": "Clouds",
+            "description": "scattered clouds",
+            "icon": "03n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 12.14,
+        "pressure": 1003.195,
+        "humidity": 26,
+        "temp_min": 12.14,
+        "temp_max": 12.14,
+        "sea_level": 1003.195,
+        "grnd_level": 874.651
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 1.59,
+        "deg": 67.583
+    },
+    "clouds": {
+        "all": 45
+    },
+    "dt": 1555848439,
+    "sys": {
+    	"type": 1,
+    	"id": 7614,
+        "message": 0.0047,
+        "country": "MN",
+        "sunrise": 1555795870,
+        "sunset": 1555845401
+    },
+    "id": 2030572,
+    "name": "Naran",
+    "cod": 200
+}

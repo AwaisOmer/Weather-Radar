@@ -1,0 +1,22 @@
+{
+    "City": {
+      "City": "Lahore",
+      "Country": "PK",
+      "Population": 6310888,
+      "Longitude": 54,
+      "Latitude": 54
+    },
+    "Weather": {
+      "Tempreture": 63,
+      "Humidity": "25%",
+      "Pressure": 63,
+      "TempretureMin": 45,
+      "TempretureMax": 4,
+      "SeaLevel": 1009.06,
+      "GroundLevel": 984.63,
+      "WindSpeed": 2.7,
+      "WindDegree": 303.501,
+      "Description": "clear sky"
+    },
+    "DateTime": "2019-04-10 15:00:00"
+  }

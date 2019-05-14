@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <cxf:rsServer address="http://localhost:9199/weathercurrent"
+        id="weatherEndpoint" serviceClass="com.weather.pojos.WeatherSevice"/>
+    <cxf:rsServer address="http://localhost:9199/weatherforecast"
+        id="forecastEndpoint" serviceClass="com.weather.pojos.WeatherSevice"/>
+    <bean
+        class="org.apache.camel.converter.dozer.DozerBeanMapperConfiguration" id="mapper">
+        <property name="mappingFiles">
+            <list>
+                <value>com/dozer/support/transformation.xml</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="com.weather.pojos.WeatherProcessor" id="weatherProcessor"/>
+    <camelContext id="camelId" xmlns="http://camel.apache.org/schema/spring">
+        <endpoint id="ForecastTransformation" uri="dozer:ForecastTransformation?sourceModel=forecastsource.ForecastSource&amp;targetModel=forecastresponse.ForecastResponse&amp;marshalId=transform-json&amp;unmarshalId=forecastsourceForecastSource&amp;mappingFile=transformation.xml"/>
+        <endpoint id="CurrentTransformation" uri="dozer:CurrentTransformation?sourceModel=currentsource.CurrentSource&amp;targetModel=currentresponse.CurrentResponse&amp;marshalId=transform-json&amp;unmarshalId=currentsourceCurrentSource&amp;mappingFile=com/dozer/support/transformation.xml"/>
+        <dataFormats>
+            <json id="currentsourceCurrentSource" library="Jackson" unmarshalTypeName="currentsource.CurrentSource"/>
+            <json id="transform-json" library="Jackson"/>
+            <json id="forecastsourceForecastSource" library="Jackson" unmarshalTypeName="forecastsource.ForecastSource"/>
+        </dataFormats>
+        <route id="cxfRoute">
+            <from id="_to1" uri="cxfrs:bean:weatherEndpoint?bindingStyle=SimpleConsumer"/>
+            <bean id="_bean1" method="GetCurrentWeather" ref="weatherProcessor"/>
+            <log id="_log1" message="GET request to retreive the Current Weather Details"/>
+            <to id="_to2" uri="ref:CurrentTransformation"/>
+        </route>
+        <route id="Forecast">
+            <from id="_to3" uri="cxfrs:bean:forecastEndpoint?bindingStyle=SimpleConsumer"/>
+            <bean id="_bean2" method="GetForecastWeather" ref="weatherProcessor"/>
+            <log id="_log2" message="GET request to retreive the Forecast Weather Details"/>
+            <to id="_to4" uri="ref:ForecastTransformation"/>
+        </route>
+    </camelContext>
+</beans>
